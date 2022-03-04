@@ -68,4 +68,25 @@ router.delete('/:userId/task/:taskId', (req, res) => {
         res.send(removed);
     })
 });
+
+//updating users
+router.patch('/:userId', (req, res) => {
+    User.findOneAndUpdate({
+        _id: req.params.userId
+    }, { $set: req.body }).then((updatedUser) => {
+        res.send(updatedUser);
+    }).catch((err) => {
+        res.send(err);
+    })
+});
+
+//updating tasks of users
+router.patch('/:userId/task/:taskId', (req, res) => {
+    Task.findOneAndUpdate({
+        _id: req.params.taskId,
+        _userid: req.params.userId
+    }, { $set: req.body }).then((updated) => {
+        res.send(updated);
+    })
+});
 module.exports = router;
