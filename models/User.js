@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const validator = require('validator');
 const postschema = mongoose.Schema({
     name: {
@@ -27,4 +28,18 @@ const postschema = mongoose.Schema({
         required: true
     }
 });
+//hashing password before saving it to DB
+postschema.pre('save', async function (next) {
+    if (this.isModified('password')) {
+        this.password = await bcrypt.hash(this.password, 10);
+    }
+    next();
+});
+// postschema.pre('findOneAndUpdate', async function (next) {
+//     if (this.isModified('password')) {
+//         this.password = await bcrypt.hash(this.password, 10);
+//     }
+//     next();
+// });
+
 module.exports = mongoose.model('User', postschema);

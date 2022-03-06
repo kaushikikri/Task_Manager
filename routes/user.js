@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
         .catch(err => {
             res.json({ message: err });
         })
-    console.log(req.body);
+    // console.log(req.body);
 })
 //inserting task corresponding to user
 router.post('/:userId/task', (req, res) => {
@@ -47,16 +47,16 @@ router.post('/:userId/task', (req, res) => {
         .catch(err => {
             res.json({ message: err });
         })
-    console.log(req.body);
+    // console.log(req.body);
 })
 //deleting user
 router.delete('/:id', (req, res) => {
     User.findOneAndRemove({ _id: req.params.id }).then((removed) => {
-        res.send(removed);
+        res.json(removed);
     })
     //all tasks corresponding to user must get deleted
     Task.findOneAndRemove({ _userId: req.params.id }).then((removedtask) => {
-        console.log(removedtask);
+        res.json(removedtask);
     })
 });
 //deleting task corresponding to user
@@ -65,7 +65,7 @@ router.delete('/:userId/task/:taskId', (req, res) => {
         _id: req.params.taskId,
         _userid: req.params.userId
     }).then((removed) => {
-        res.send(removed);
+        res.json(removed);
     })
 });
 
@@ -73,8 +73,8 @@ router.delete('/:userId/task/:taskId', (req, res) => {
 router.patch('/:userId', (req, res) => {
     User.findOneAndUpdate({
         _id: req.params.userId
-    }, { $set: req.body }).then((updatedUser) => {
-        res.send(updatedUser);
+    }, { $set: req.body }).then(() => {
+        res.send("OK");
     }).catch((err) => {
         res.send(err);
     })
@@ -86,7 +86,7 @@ router.patch('/:userId/task/:taskId', (req, res) => {
         _id: req.params.taskId,
         _userid: req.params.userId
     }, { $set: req.body }).then((updated) => {
-        res.send(updated);
+        res.json(updated);
     })
 });
 module.exports = router;
