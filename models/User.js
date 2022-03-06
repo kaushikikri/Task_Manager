@@ -5,7 +5,13 @@ const postschema = mongoose.Schema({
     name: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        maxlength: 50,
+        validate(value) {
+            if (!validator.isAlpha(value)) {
+                throw new Error('Name must contain character only!');
+            }
+        }
     },
     email: {
         type: String,
@@ -21,11 +27,21 @@ const postschema = mongoose.Schema({
     password: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        minlength: 8,
+        maxlength: 15
     },
     age: {
         type: Number,
-        required: true
+        required: true,
+        trim: true,
+        min: 0,
+        max: 150,
+        validate(value) {
+            if (!validator.isInt(value)) {
+                throw new Error("Age should be integer only");
+            }
+        }
     }
 });
 //hashing password before saving it to DB
