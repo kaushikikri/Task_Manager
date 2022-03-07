@@ -37,11 +37,6 @@ const postschema = mongoose.Schema({
         trim: true,
         min: 0,
         max: 150,
-        validate(value) {
-            if (!validator.isInt(value)) {
-                throw new Error("Age should be integer only");
-            }
-        }
     }
 });
 //hashing password before saving it to DB
